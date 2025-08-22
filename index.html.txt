@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <!-- Fake preview info -->
+  <title>Funny Cat Video</title>
+  <meta name="description" content="This cat had me laughing for 5 minutes straight 😂 Check it out!">
+
+  <meta property="og:title" content="Funny Cat Video" />
+  <meta property="og:description" content="You won’t believe what this cat does at the end 😂" />
+  <meta property="og:image" content="https://placekitten.com/800/400" />
+  <meta property="og:url" content="https://your-site-link.com" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Funny Cat Video" />
+  <meta name="twitter:description" content="You won’t believe what this cat does at the end 😂" />
+  <meta name="twitter:image" content="https://placekitten.com/800/400" />
+
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 2rem; background: #0f172a; color: #f1f5f9; text-align: center; }
+    .card { max-width: 600px; margin: auto; padding: 2rem; background: #1e293b; border-radius: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+    h1 { font-size: 1.5rem; margin-bottom: 1rem; }
+    pre { background: #0f172a; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; text-align: left; }
+
+    /* Spinner */
+    .spinner {
+      border: 6px solid #1e293b;
+      border-top: 6px solid #38bdf8;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      margin: 2rem auto;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    .hidden { display:none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Loading...</h1>
+    <div id="loading">
+      <div class="spinner"></div>
+      <p>Connecting…</p>
+    </div>
+
+    <div id="reveal" class="hidden">
+      <h1>Gotcha 👀</h1>
+      <p>This page just showed what websites can see about you instantly:</p>
+      <pre id="info">Loading…</pre>
+      <p><strong>Don’t worry!</strong> This was just a harmless experiment. Nothing was stored or sent anywhere — you’re safe ✅</p>
+      <p><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color:#38bdf8;">Continue to video ▶</a></p>
+    </div>
+  </div>
+
+  <script>
+    async function reveal() {
+      const loading = document.getElementById("loading");
+      const reveal = document.getElementById("reveal");
+      const info = document.getElementById("info");
+
+      try {
+        // Get IP
+        const ipRes = await fetch("https://api.ipify.org?format=json");
+        const ipData = await ipRes.json();
+
+        // Collect basic browser info
+        const data = {
+          ip: ipData.ip,
+          browser: navigator.userAgent,
+          language: navigator.language,
+          platform: navigator.platform
+        };
+
+        info.textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        info.textContent = "Could not fetch info.";
+      }
+
+      loading.classList.add("hidden");
+      reveal.classList.remove("hidden");
+    }
+
+    // Fake loading for 3 seconds before reveal
+    setTimeout(reveal, 3000);
+  </script>
+</body>
+</html>
